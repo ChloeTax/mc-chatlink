@@ -1,7 +1,4 @@
 import chatlink
-import asyncio
-
-import time
 
 class consoleService(chatlink.chatService):
 

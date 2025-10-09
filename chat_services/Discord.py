@@ -1,5 +1,4 @@
 import chatlink
-import asyncio
 import discord
 
 

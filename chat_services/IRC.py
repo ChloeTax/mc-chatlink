@@ -1,6 +1,5 @@
-import chatlink
 from websockets.sync.client import connect
-import asyncio
+import chatlink
 
 
 

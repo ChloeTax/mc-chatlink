@@ -1,6 +1,5 @@
-import chatlink
 from mcrcon import MCRcon
-import threading
+import chatlink
 import time
 import json
 
