@@ -9,8 +9,8 @@ RconPort = 35575
 
 webhookURL = "https://discord.com/api/webhooks/etc"
 DiscordToken = "token"
-DiscordChannelID = "123456"
-DiscordGuildID = "654321"
+DiscordChannelID = 123456
+DiscordGuildID = 654321
 
 IRCAddress = "wss://irc.example.com:8000"
 IRCBotNick = "mcrelay"
