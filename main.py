@@ -1,4 +1,3 @@
-import asyncio
 import dotenv
 import os
 
@@ -27,7 +26,7 @@ from chat_services.Discord import DiscordService
 from chat_services.IRC import IRCService
 from chat_services.Minecraft import minecraftService
 
-async def main():
+def main():
 
     services = [
         consoleService(),
@@ -43,4 +42,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
