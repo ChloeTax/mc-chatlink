@@ -14,15 +14,9 @@ class ChatService:
     def _poll(self):
         pass
 
-    def _relay(self, message: str):
+    def _relay(self, message: Message):
         for sink in self.chatDestinations:
-            sink.send(
-                Message(
-                    author=MessageAuthor(name="Test", id=0),
-                    content=MessageContent(content=message),
-                    platform="Console",
-                )
-            )
+            sink.send(message=message)
 
     def send(self, message: Message):
         pass
@@ -40,7 +34,7 @@ class ChatService:
 
 class MessageAuthor(BaseModel):
     name: str
-    id: int
+    id: int | str
     color: str = "#FFFFFF"
 
 

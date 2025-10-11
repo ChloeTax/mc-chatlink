@@ -30,7 +30,15 @@ class IRCService(chatlink.ChatService):
                         ircnick = parts[0][1:].split("!")[0]
                         ircmsg = " ".join(parts[3:])[1:]
                         if parts[2] == self.irc_bot_channel:
-                            self._relay(f"{ircnick}: {ircmsg}")
+                            self._relay(
+                                message=chatlink.Message(
+                                    author=chatlink.MessageAuthor(
+                                        name=ircnick, id=ircnick
+                                    ),
+                                    content=chatlink.MessageContent(content=ircmsg),
+                                    platform="IRC",
+                                )
+                            )
             else:
                 self._irc_connect()
 
@@ -55,5 +63,5 @@ class IRCService(chatlink.ChatService):
             self.websocket = connect(self.irc_address)
 
         self.websocket.send(
-            f"privmsg {self.irc_bot_channel} :{message.content.content}"
+            f"privmsg {self.irc_bot_channel} :{{{message.author.name}}} {message.content.content}"
         )

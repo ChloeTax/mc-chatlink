@@ -6,4 +6,4 @@ class ConsoleService(chatlink.ChatService):
         super().__init__()
 
     def send(self, message: chatlink.Message):
-        print("sunk", message.content)
+        print("sunk", message)
