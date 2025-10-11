@@ -3,17 +3,17 @@
 this expects a .env file containing
 
 ```
-RconPassword = "rcon passwod"
-RconHost = "127.0.0.1"
-RconPort = 35575
+rcon_password = "rcon passwod"
+rcon_host = "127.0.0.1"
+rcon_port = 35575
 
 webhookURL = "https://discord.com/api/webhooks/etc"
-DiscordToken = "token"
-DiscordChannelID = 123456
-DiscordGuildID = 654321
+discord_token = "token"
+discord_channel_id = 123456
+discord_guild_id = 654321
 
-IRCAddress = "wss://irc.example.com:8000"
-IRCBotNick = "mcrelay"
-IRCBotPass = "hunter1"
-IRCBotChannel = "#mc-chatlink"
+irc_address = "wss://irc.example.com:8000"
+irc_bot_nickname = "mcrelay"
+irc_bot_password = "hunter1"
+irc_bot_channel = "#mc-chatlink"
 ```

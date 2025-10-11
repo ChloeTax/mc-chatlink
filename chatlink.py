@@ -1,51 +1,55 @@
-from typing import Literal
+from __future__ import annotations
+
 import threading
+from typing import Literal
 
-class chatService:
+from pydantic import BaseModel
 
+
+class ChatService:
     def __init__(self):
-        self.chatDestinations = list()
-        poll_messages(self)
+        self.chatDestinations: list[ChatService] = list()
+        PollMessages(self)
 
     def _poll(self):
         pass
 
     def _relay(self, message: str):
         for sink in self.chatDestinations:
-            sink.send(message)
+            sink.send(
+                Message(
+                    author=MessageAuthor(name="Test", id=0),
+                    content=MessageContent(content=message),
+                    platform="Console",
+                )
+            )
 
-    def fromCommonFormat(self, message: dict) -> any:
-        return str(message)
-
-    def toCommonFormat(self, message: any) -> dict:
-        return {"message": message}
-
-    def send(self, message: str):
+    def send(self, message: Message):
         pass
 
-    def register(self, chatDestination):
-        self.chatDestinations.append(chatDestination)
+    def register(self, chat_destination: ChatService):
+        self.chatDestinations.append(chat_destination)
 
 
-class poll_messages(threading.Thread):
-    def __init__(self, chatService: chatService):
+class PollMessages(threading.Thread):
+    def __init__(self, chat_service: ChatService):
         super().__init__(daemon=False)
-        self.chatService = chatService
-        self.run = chatService._poll
+        self.ChatService = chat_service
+        self.run = chat_service._poll  # pyright: ignore[reportPrivateUsage]
         self.start()
 
 
+class MessageAuthor(BaseModel):
+    name: str
+    id: int
+    color: str = "#FFFFFF"
 
-class MessageAuthor:
-    def __init__(self, name: str, id: str|int):
-        self.name = name
-        pass
 
-class MessageContent:
-    def __init__(self, content: dict):
-        pass
+class MessageContent(BaseModel):
+    content: str
 
-class Message:
-    def __init__(self, author: MessageAuthor, content: MessageContent, platform: Literal["Console", "Discord", "IRC", "Minecraft"]):
-        self.author = author
 
+class Message(BaseModel):
+    author: MessageAuthor
+    content: MessageContent
+    platform: Literal["Console", "Discord", "IRC", "Minecraft"]

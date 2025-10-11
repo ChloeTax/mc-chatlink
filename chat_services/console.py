@@ -1,14 +1,9 @@
 import chatlink
 
-class consoleService(chatlink.chatService):
 
+class ConsoleService(chatlink.ChatService):
     def __init__(self):
         super().__init__()
 
-
-    def send(self, message):
-        print("sunk", message)
-
-
-
-
+    def send(self, message: chatlink.Message):
+        print("sunk", message.content)

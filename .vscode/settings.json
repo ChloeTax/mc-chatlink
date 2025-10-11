@@ -1,0 +1,15 @@
+{
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports.ruff": "explicit"
+        },
+    },
+    "ruff.organizeImports": true,
+    "ruff.lint.ignore": [
+        "I", // format on save is enabled, so don't show the squiggles
+    ],
+    "python.languageServer": "Pylance",
+    "python.analysis.diagnosticMode": "workspace",
+}
