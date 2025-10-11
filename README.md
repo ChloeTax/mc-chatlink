@@ -5,9 +5,9 @@ this expects a .env file containing
 ```
 rcon_password = "rcon passwod"
 rcon_host = "127.0.0.1"
-rcon_port = 35575
+rcon_port = 25575
 
-webhookURL = "https://discord.com/api/webhooks/etc"
+webhook_url = "https://discord.com/api/webhooks/etc"
 discord_token = "token"
 discord_channel_id = 123456
 discord_guild_id = 654321

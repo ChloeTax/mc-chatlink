@@ -10,21 +10,21 @@ from chat_services.Minecraft import MinecraftService
 dotenv.load_dotenv()
 
 # minecraft
-rcon_host: str = os.getenv("rcon_host")  # pyright: ignore[reportAssignmentType]
-rcon_port: int = int(os.getenv("rcon_port"))  # pyright: ignore[reportArgumentType, reportAssignmentType]
-rcon_password: str = os.getenv("rcon_password")  # pyright: ignore[reportAssignmentType]
+rcon_password: str = os.getenv("rcon_password", " rcon password")
+rcon_host: str = os.getenv("rcon_host", "127.0.0.1")
+rcon_port: int = int(os.getenv("rcon_port", "25575"))
 
 # discord
-webhook_url: str = os.getenv("webhook_url")  # pyright: ignore[reportAssignmentType]
-discord_token: str = os.getenv("discord_token")  # pyright: ignore[reportAssignmentType]
-discord_channel_id: int = int(os.getenv("discord_channel_id"))  # pyright: ignore[reportArgumentType, reportAssignmentType]
-discord_guild_id: int = int(os.getenv("discord_guild_id"))  # pyright: ignore[reportArgumentType, reportAssignmentType]
+webhook_url: str = os.getenv("webhook_url", "https://discord.com/api/webhooks/etc")
+discord_token: str = os.getenv("discord_token", "token")
+discord_channel_id: int = int(os.getenv("discord_channel_id", "123456"))
+discord_guild_id: int = int(os.getenv("discord_guild_id", "654321"))
 
 # irc
-irc_address: str = os.getenv("irc_address")  # pyright: ignore[reportAssignmentType]
-irc_bot_nickname: str = os.getenv("irc_bot_nickname")  # pyright: ignore[reportAssignmentType]
-irc_bot_password: str = os.getenv("irc_bot_password")  # pyright: ignore[reportAssignmentType]
-irc_bot_channel: str = os.getenv("irc_bot_channel")  # pyright: ignore[reportAssignmentType]
+irc_address: str = os.getenv("irc_address", "wss://irc.example.com:8000")
+irc_bot_nickname: str = os.getenv("irc_bot_nickname", "mcrelay")
+irc_bot_password: str = os.getenv("irc_bot_password", "hunter1")
+irc_bot_channel: str = os.getenv("irc_bot_channel", "mc-chatlink")
 
 
 def main():

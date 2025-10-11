@@ -15,7 +15,7 @@ class MinecraftService(chatlink.ChatService):
     def _poll(self):
         while True:
             for message in json.loads(self.mcr.command("queryMessages")[:-59]):  # pyright: ignore[reportUnknownMemberType]
-                self._relay(message)
+                self._relay(json.dumps(message))
             time.sleep(1)
 
     def send(self, message: chatlink.Message):
@@ -38,6 +38,5 @@ class MinecraftService(chatlink.ChatService):
         })
         tellraw_command.append({"text": "] "})
         tellraw_command.append({"text": message.content.content})
-        full_command = "tellraw @a " + json.dumps(tellraw_command)
 
-        return full_command
+        return json.dumps(tellraw_command)
