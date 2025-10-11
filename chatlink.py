@@ -9,7 +9,7 @@ from pydantic import BaseModel
 class ChatService:
     def __init__(self):
         self.chatDestinations: list[ChatService] = list()
-        PollMessages(self)
+        self.PollMessages(self)
 
     def _poll(self):
         pass
@@ -30,13 +30,12 @@ class ChatService:
     def register(self, chat_destination: ChatService):
         self.chatDestinations.append(chat_destination)
 
-
-class PollMessages(threading.Thread):
-    def __init__(self, chat_service: ChatService):
-        super().__init__(daemon=False)
-        self.ChatService = chat_service
-        self.run = chat_service._poll  # pyright: ignore[reportPrivateUsage]
-        self.start()
+    class PollMessages(threading.Thread):
+        def __init__(self, chat_service: ChatService):
+            super().__init__(daemon=False)
+            self.ChatService = chat_service
+            self.run = chat_service._poll
+            self.start()
 
 
 class MessageAuthor(BaseModel):
