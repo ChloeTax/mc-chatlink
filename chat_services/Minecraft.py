@@ -17,7 +17,7 @@ class MinecraftService(chatlink.ChatService):
             for message in json.loads(self.mcr.command("queryMessages")[:-59]):  # pyright: ignore[reportUnknownMemberType]
                 self._relay(
                     message=chatlink.Message(
-                        author=chatlink.MessageAuthor(name=message[2], id=0),
+                        author=chatlink.MessageAuthor(name=message[2], id=message[1]),
                         content=chatlink.MessageContent(content=message[3]),
                         platform="Minecraft",
                     )

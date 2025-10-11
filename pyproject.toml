@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "discord>=2.3.2",
+    "discord-webhook>=1.4.1",
     "dotenv>=0.9.9",
     "mcrcon>=0.7.0",
     "pydantic>=2.12.0",
