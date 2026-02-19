@@ -34,15 +34,23 @@ class ChatService:
 
 class MessageAuthor(BaseModel):
     name: str
-    id: int | str
+    id: int | str | None = None
     color: str = "#FFFFFF"
+    display: TextComponent | None = None
 
 
-class MessageContent(BaseModel):
+class TextComponent(BaseModel):
     content: str
+    color: None | str = "#FFFFFF"
+    bold: bool = False
+    italics: bool = False
+    underline: bool = False
+    spoiler: bool = False
+    code: bool = False
 
 
 class Message(BaseModel):
     author: MessageAuthor
-    content: MessageContent
+    content: list[TextComponent]
+    reply: Message | None = None
     platform: Literal["Console", "Discord", "IRC", "Minecraft"]

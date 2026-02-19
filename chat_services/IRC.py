@@ -35,12 +35,36 @@ class IRCService(chatlink.ChatService):
                                     author=chatlink.MessageAuthor(
                                         name=ircnick, id=ircnick
                                     ),
-                                    content=chatlink.MessageContent(content=ircmsg),
+                                    content=[chatlink.TextComponent(content=ircmsg)],
                                     platform="IRC",
                                 )
                             )
             else:
                 self._irc_connect()
+
+    def from_common_format(self, message: chatlink.Message) -> str:
+        output = ""
+        for component in message.content:
+            segment = component.content
+
+            if component.bold:
+                segment = f"{segment}"
+
+            if component.italics:
+                segment = f"{segment}"
+
+            if component.underline:
+                segment = f"{segment}"
+
+            if component.spoiler:
+                segment = f"||{segment}||"
+
+            if component.code:
+                segment = f"{segment}"
+
+            output += segment
+
+        return output
 
     def _irc_connect(self):
         if self.websocket:
@@ -63,5 +87,5 @@ class IRCService(chatlink.ChatService):
             self.websocket = connect(self.irc_address)
 
         self.websocket.send(
-            f"privmsg {self.irc_bot_channel} :{{{message.author.name}}} {message.content.content}"
+            f"privmsg {self.irc_bot_channel} :{{{message.author.name}}} {self.from_common_format(message)}"
         )
