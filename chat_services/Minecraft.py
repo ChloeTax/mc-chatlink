@@ -16,29 +16,29 @@ class MinecraftService(chatlink.ChatService):
     def _poll(self):
         while True:
             try:
-                for message in json.loads(self.mcr.command("queryMessages")[:-59]):  # pyright: ignore[reportUnknownMemberType]
-                    print(message)
+                for message in json.loads(self.mcr.command("queryMessages")[:-60]):  # pyright: ignore[reportUnknownMemberType]
                     if message[0] == "CHAT":
-                        text = self.to_common_format(message[4])
-
-                        print(text)
-
-                        self._relay(
-                            message=chatlink.Message(
-                                author=chatlink.MessageAuthor(
-                                    name=message[2], id=message[1]
-                                ),
-                                content=text,
-                                platform="Minecraft",
+                        try:
+                            text = self.to_common_format(message[4])
+                        except Exception as e:
+                            print("exception parsing in minecraft -> common: ", e)
+                        else:
+                            self._relay(
+                                message=chatlink.Message(
+                                    author=chatlink.MessageAuthor(
+                                        name=message[2], id=message[1]
+                                    ),
+                                    content=text,
+                                    platform="Minecraft",
+                                )
                             )
-                        )
                     elif message[0] == "JOIN":
                         self._relay(
                             message=chatlink.Message(
                                 author=chatlink.MessageAuthor(name=""),
                                 content=[
                                     chatlink.TextComponent(
-                                        content=f"{message[2]} Joined the game",
+                                        content=f"{message[2]} joined the game",
                                         color="#ffff00",
                                     )
                                 ],
@@ -51,7 +51,7 @@ class MinecraftService(chatlink.ChatService):
                                 author=chatlink.MessageAuthor(name=""),
                                 content=[
                                     chatlink.TextComponent(
-                                        content=f"{message[2]} Left the game",
+                                        content=f"{message[2]} left the game",
                                         color="#ffff00",
                                     )
                                 ],
@@ -71,10 +71,23 @@ class MinecraftService(chatlink.ChatService):
         ) -> list[chatlink.TextComponent]:
             output: list[chatlink.TextComponent] = []
 
+            if isinstance(component, str):
+                return [
+                    chatlink.TextComponent(
+                        content=component,
+                        color="#FFFFFF",
+                        bold=False,
+                        italics=False,
+                        underline=False,
+                        spoiler=spoiler,
+                    )
+                ]
+
             if "text" in component:
                 output.append(
                     chatlink.TextComponent(
                         content=component["text"],
+                        color=component.get("color", "#FFFFFF"),
                         bold="bold" in component,
                         italics="italic" in component,
                         underline="underlined" in component,
@@ -96,7 +109,15 @@ class MinecraftService(chatlink.ChatService):
 
     def from_common_format(self, message: chatlink.Message):
         tellraw_command: list[dict[str, str | dict[str, str | list[str]]]] = []
-        tellraw_command.append({"text": "[@"})
+
+        if message.author.name:
+            if message.platform == "Discord":
+                tellraw_command.append({"text": "[@"})
+            if message.platform == "Minecraft":
+                tellraw_command.append({"text": "<"})
+            if message.platform == "IRC":
+                tellraw_command.append({"text": "("})
+
         tellraw_command.append({
             "text": message.author.name,
             "clickEvent": {
@@ -109,7 +130,32 @@ class MinecraftService(chatlink.ChatService):
             },
             "color": message.author.color,
         })
-        tellraw_command.append({"text": "] "})
-        tellraw_command.append({"text": message.content[0].content})
 
+        if message.author.name:
+            if message.platform == "Discord":
+                tellraw_command.append({"text": "] "})
+            if message.platform == "Minecraft":
+                tellraw_command.append({"text": "> "})
+            if message.platform == "IRC":
+                tellraw_command.append({"text": ") "})
+
+        for chunk in message.content:
+            segment = {
+                "text": chunk.content,
+                "bold": chunk.bold,
+                "italic": chunk.italics,
+                "underlined": chunk.underline,
+                "color": chunk.color,
+            }
+
+            if chunk.spoiler:
+                tellraw_command.append({
+                    "text": "▌" * len(segment["text"]),  # type: ignore
+                    "color": "gray",
+                    "hoverEvent": {"action": "show_text", "contents": [segment]},  # type: ignore
+                })
+            else:
+                tellraw_command.append(segment)  # type: ignore
+
+        print(tellraw_command)
         return json.dumps(tellraw_command)

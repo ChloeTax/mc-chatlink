@@ -129,7 +129,7 @@ class DiscordBot(threading.Thread):
                             content=[
                                 chatlink.TextComponent(content=data["d"]["content"])
                             ],
-                            platform="Minecraft",
+                            platform="Discord",
                         )
                     )
 
